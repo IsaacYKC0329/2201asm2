@@ -10,7 +10,15 @@ public class LightDamageState implements State {
     }
 
     @Override
-    public State takeHit() {
-        return new HeavyDamageState();
+    public State takeHit(int hits) {
+        if (hits == 2) {
+            return new HeavyDamageState();
+        }
+        return this;
+    }
+
+    @Override
+    public boolean shouldRemove() {
+        return false;
     }
 }

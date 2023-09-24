@@ -4,5 +4,6 @@ import javafx.scene.paint.Color;
 
 public interface State {
     Color getColor();
-    State takeHit();
+    State takeHit(int hits);
+    boolean shouldRemove();
 }

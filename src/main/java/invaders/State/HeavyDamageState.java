@@ -10,7 +10,12 @@ public class HeavyDamageState implements State {
     }
 
     @Override
-    public State takeHit() {
+    public State takeHit(int hits) {
         return this;
+    }
+
+    @Override
+    public boolean shouldRemove() {
+        return true;
     }
 }
