@@ -2,11 +2,8 @@ package invaders.Builder;
 
 import invaders.entities.Enemy;
 
-public interface builder {
-
-    void getPosition(double x, double y);
-
-
-   void build();
-
+interface builder {
+    void setPositions(int x, int y);
+    void setSize(int x, int y);
+    Object build();
 }

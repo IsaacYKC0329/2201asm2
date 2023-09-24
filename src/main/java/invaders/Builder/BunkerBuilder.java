@@ -2,61 +2,59 @@ package invaders.Builder;
 
 import invaders.entities.Bunker;
 import invaders.entities.Enemy;
-import invaders.physics.Vector2D;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import invaders.physics.Vector2D;
 
+import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BunkerBuilder implements builder {
     private Vector2D position;
     private Vector2D size;
+    private static final String CONFIG_PATH = "resources/config.json";
 
     @Override
-    public void getPosition(double x, double y) {
+    public void setPositions(int x, int y) {
         this.position = new Vector2D(x, y);
     }
 
-
-    public void getSize(double x, double y) {
+    @Override
+    public void setSize(int x, int y) {
         this.size = new Vector2D(x, y);
     }
 
     @Override
-    public void build() {
-        new Bunker(position, size);
+    public Object build() {
+        return new Bunker(position, size);
     }
 
-    public List<Bunker> buildFromJson(String filepath) {
-        List<Bunker> bunkers = new ArrayList<>();
-
+    public Bunker[] buildBunkersFromConfig() {
+        Bunker[] bunkers;
+        JSONParser parser = new JSONParser();
         try {
-            // Parse the JSON file
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filepath));
-            JSONArray bunkersArray = (JSONArray) jsonObject.get("Bunkers");
+            FileReader reader = new FileReader(CONFIG_PATH);
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            JSONArray bunkerArray = (JSONArray) jsonObject.get("Bunkers");
+            bunkers = new Bunker[bunkerArray.size()];
 
-            for (Object obj : bunkersArray) {
-                JSONObject bunkerData = (JSONObject) obj;
+            for (int i = 0; i < bunkerArray.size(); i++) {
+                JSONObject bunkerObj = (JSONObject) bunkerArray.get(i);
+                JSONObject positionObj = (JSONObject) bunkerObj.get("position");
+                JSONObject sizeObj = (JSONObject) bunkerObj.get("size");
 
-                JSONObject positionData = (JSONObject) bunkerData.get("position");
-                getPosition((double) positionData.get("x"), (double) positionData.get("y"));
+                setPositions(((Long) positionObj.get("x")).intValue(), ((Long) positionObj.get("y")).intValue());
+                setSize(((Long) sizeObj.get("x")).intValue(), ((Long) sizeObj.get("y")).intValue());
 
-                JSONObject sizeData = (JSONObject) bunkerData.get("size");
-                getSize((double) sizeData.get("x"), (double) sizeData.get("y"));
-
-                bunkers.add(build());
+                bunkers[i] = (Bunker) build();
             }
-
+            return bunkers;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return bunkers;
     }
 }

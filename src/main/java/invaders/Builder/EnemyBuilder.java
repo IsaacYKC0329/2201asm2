@@ -7,48 +7,54 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import invaders.physics.Vector2D;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EnemyBuilder implements builder {
     private Vector2D position;
-    private final String image = "enemy.png";
+    private String projectileType;
+    private static final String CONFIG_PATH = "src/main/resources/config.json";  // Update this path.
 
     @Override
-    public void getPosition(double x, double y) {
+    public void setPositions(int x, int y) {
         this.position = new Vector2D(x, y);
     }
 
     @Override
-    public Enemy build() {
-        return new Enemy(position, image);
+    public void setSize(int x, int y) {
+        return;
     }
 
-    public List<Enemy> buildFromJson(String filepath) {
-        List<Enemy> enemies = new ArrayList<>();
+    @Override
+    public Object build() {
+        return new Enemy(position, projectileType);
+    }
 
+    public Enemy[] buildEnemiesFromConfig() {
+        Enemy[] enemies;
+        JSONParser parser = new JSONParser();
         try {
-            // Parse the JSON file
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(filepath));
-            JSONArray enemiesArray = (JSONArray) jsonObject.get("Enemies");
+            FileReader reader = new FileReader(CONFIG_PATH);
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            JSONArray enemyArray = (JSONArray) jsonObject.get("Enemies");
+            enemies = new Enemy[enemyArray.size()];
 
-            for (Object obj : enemiesArray) {
-                JSONObject enemyData = (JSONObject) obj;
+            for (int i = 0; i < enemyArray.size(); i++) {
+                JSONObject enemyObj = (JSONObject) enemyArray.get(i);
+                JSONObject positionObj = (JSONObject) enemyObj.get("position");
+                String projectile = (String) enemyObj.get("projectile");
 
-                JSONObject positionData = (JSONObject) enemyData.get("position");
-                getPosition((double) positionData.get("x"), (double) positionData.get("y"));
+                setPositions(((Long) positionObj.get("x")).intValue(), ((Long) positionObj.get("y")).intValue());
+                this.projectileType = projectile;
 
-                enemies.add(build());
+                enemies[i] = (Enemy) build();
             }
-
+            return enemies;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return enemies;
     }
 }
