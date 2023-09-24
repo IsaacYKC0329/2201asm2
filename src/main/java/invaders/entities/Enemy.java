@@ -1,5 +1,6 @@
 package invaders.entities;
 
+
 import invaders.Strategy.FastStrategy;
 import invaders.Strategy.ProjectileStrategy;
 import invaders.Strategy.SlowStrategy;
@@ -7,7 +8,6 @@ import invaders.physics.Vector2D;
 import javafx.scene.image.Image;
 
 import java.io.File;
-
 
 public class Enemy {
     private Vector2D position;

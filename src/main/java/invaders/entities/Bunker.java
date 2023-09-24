@@ -43,7 +43,6 @@ public class Bunker {
     }
 
     private void removeBunker() {
-
-        System.out.println("Bunker killed");
+        return;
     }
 }
