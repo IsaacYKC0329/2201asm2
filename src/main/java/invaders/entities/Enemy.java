@@ -12,10 +12,7 @@ import java.io.File;
 public class Enemy {
     private Vector2D position;
     private String projectileType;
-
     private Image image;
-
-
     private ProjectileStrategy projectileStrategy;
 
     public Enemy(Vector2D position, String projectileType) {

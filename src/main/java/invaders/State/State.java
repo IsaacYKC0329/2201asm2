@@ -1,6 +1,8 @@
 package invaders.State;
 
-public interface State {
+import javafx.scene.paint.Color;
 
-    void updateState();
+public interface State {
+    Color getColor();
+    State takeHit();
 }

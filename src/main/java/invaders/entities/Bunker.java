@@ -1,20 +1,32 @@
 package invaders.entities;
 
 import invaders.physics.Vector2D;
-
-import java.awt.*;
+import javafx.scene.paint.Color;
+import invaders.State.State;
+import invaders.State.NoDamageState;
 
 public class Bunker {
     private Vector2D position;
     private Vector2D size;
-    private int hits;
-
-    private String color;
+    private State state;
 
     public Bunker(Vector2D position, Vector2D size) {
         this.position = position;
         this.size = size;
-        this.hits = 0;
+        this.state = new NoDamageState();
+    }
+
+    public void hit() {
+        state = state.takeHit();
+        // Check if bunker should be removed
+        if (state.getColor() == Color.RED) {
+            // Call game logic to remove bunker
+
+        }
+    }
+
+    public Color getColor() {
+        return state.getColor();
     }
 
     public Vector2D getPosition() {
@@ -25,32 +37,23 @@ public class Bunker {
         return size;
     }
 
-    public int getHits() {
-        return hits;
+    public void setPosition(Vector2D position) {
+        this.position = position;
     }
 
-    public void hit() {
-        this.hits++;
-        if (hits == 3) {
-            // Remove bunker from game.
-
-        } else {
-            updateColor();
-        }
+    public void setSize(Vector2D size) {
+        this.size = size;
     }
 
-    private void updateColor() {
-        switch (hits) {
-            case 0:
-                // set color to green
+    public void setState(State state) {
+        this.state = state;
+    }
 
-                break;
-            case 1:
-                // set color to yellow
-                break;
-            case 2:
-                // set color to red
-                break;
-        }
+    public State getState() {
+        return state;
+    }
+
+    public void update() {
+
     }
 }
