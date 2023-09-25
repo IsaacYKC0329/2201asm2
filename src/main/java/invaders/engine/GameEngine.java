@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import invaders.Builder.BunkerBuilder;
+import invaders.Builder.EnemyBuilder;
 import invaders.GameObject;
 import invaders.entities.Player;
 import invaders.physics.Moveable;
@@ -13,7 +15,7 @@ import invaders.rendering.Renderable;
 /**
  * This class manages the main loop and logic of the game
  */
-public class GameEngine {
+public class GameEngine{
 
 	private List<GameObject> gameobjects;
 	private List<Renderable> renderables;
@@ -31,6 +33,17 @@ public class GameEngine {
 
 		player = new Player(new Vector2D(200, 380));
 		renderables.add(player);
+
+
+		BunkerBuilder bunkerBuilder = new BunkerBuilder();
+		List<Renderable> bunkers = bunkerBuilder.buildBunkersFromConfig();
+		renderables.addAll(bunkers);
+
+		EnemyBuilder enemyBuilder = new EnemyBuilder();
+		List<Renderable> enemies = enemyBuilder.buildEnemiesFromConfig();
+		renderables.addAll(enemies);
+
+
 	}
 
 	/**
@@ -44,7 +57,7 @@ public class GameEngine {
 
 		// ensure that renderable foreground objects don't go off-screen
 		for(Renderable ro: renderables){
-			if(!ro.getLayer().equals(Renderable.Layer.FOREGROUND)){
+			if(ro.getLayer() != null && ro.getLayer().equals(Renderable.Layer.FOREGROUND)){
 				continue;
 			}
 			if(ro.getPosition().getX() + ro.getWidth() >= 640) {
@@ -62,6 +75,13 @@ public class GameEngine {
 			if(ro.getPosition().getY() <= 0) {
 				ro.getPosition().setY(1);
 			}
+		}
+	}
+
+	public void start(){
+		// start the game loop
+		for(GameObject go: gameobjects){
+			go.start();
 		}
 	}
 
@@ -99,4 +119,5 @@ public class GameEngine {
 			player.right();
 		}
 	}
+
 }

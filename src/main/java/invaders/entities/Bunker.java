@@ -3,9 +3,11 @@ package invaders.entities;
 import invaders.physics.Vector2D;
 import invaders.State.State;
 import invaders.State.NoDamageState;
+import invaders.rendering.Renderable;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class Bunker {
+public class Bunker implements Renderable{
     private Vector2D position;
     private Vector2D size;
     private State state;
@@ -18,8 +20,28 @@ public class Bunker {
         this.state = new NoDamageState();
     }
 
+    @Override
+    public Image getImage() {
+        return null;
+    }
+
+    @Override
+    public double getWidth() {
+        return 0;
+    }
+
+    @Override
+    public double getHeight() {
+        return 0;
+    }
+
     public Vector2D getPosition() {
         return position;
+    }
+
+    @Override
+    public Layer getLayer() {
+        return null;
     }
 
     public Vector2D getSize() {
@@ -36,7 +58,7 @@ public class Bunker {
 
     public void hit() {
         hits++;
-        state = state.takeHit(hits);  // Pass hits count to states
+        state = state.takeHit(hits);
         if (state.shouldRemove()) {
             removeBunker();
         }

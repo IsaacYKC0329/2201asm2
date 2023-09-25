@@ -3,14 +3,15 @@ package invaders.Builder;
 import invaders.entities.Enemy;
 import invaders.physics.Vector2D;
 
+import invaders.rendering.Renderable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import invaders.physics.Vector2D;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class EnemyBuilder implements builder {
     private Vector2D position;
@@ -28,18 +29,20 @@ public class EnemyBuilder implements builder {
     }
 
     @Override
-    public Object build() {
-        return new Enemy(position, projectileType);
+    public ArrayList<Renderable> build() {
+        ArrayList<Renderable> enemiesList = new ArrayList<>();
+        enemiesList.add((Renderable) new Enemy(position, projectileType));
+        return enemiesList;
     }
 
-    public Enemy[] buildEnemiesFromConfig() {
-        Enemy[] enemies;
+
+    public ArrayList<Renderable> buildEnemiesFromConfig() {
+        ArrayList<Renderable> enemiesList = new ArrayList<>();
         JSONParser parser = new JSONParser();
         try {
             FileReader reader = new FileReader(CONFIG_PATH);
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             JSONArray enemyArray = (JSONArray) jsonObject.get("Enemies");
-            enemies = new Enemy[enemyArray.size()];
 
             for (int i = 0; i < enemyArray.size(); i++) {
                 JSONObject enemyObj = (JSONObject) enemyArray.get(i);
@@ -49,12 +52,13 @@ public class EnemyBuilder implements builder {
                 setPositions(((Long) positionObj.get("x")).intValue(), ((Long) positionObj.get("y")).intValue());
                 this.projectileType = projectile;
 
-                enemies[i] = (Enemy) build();
+                enemiesList.addAll(build());
             }
-            return enemies;
+            return enemiesList;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
             return null;
         }
     }
 }
+
