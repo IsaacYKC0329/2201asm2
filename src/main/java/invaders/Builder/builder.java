@@ -1,9 +1,8 @@
 package invaders.Builder;
 
 import invaders.entities.Enemy;
+import invaders.rendering.Renderable;
 
 interface builder {
-    void setPositions(int x, int y);
-    void setSize(int x, int y);
     Object build();
 }

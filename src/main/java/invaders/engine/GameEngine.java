@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import invaders.Builder.BunkerBuilder;
+import invaders.Builder.EnemyBuilder;
+import invaders.Builder.PlayerBuilder;
 import invaders.GameObject;
+import invaders.entities.Bunker;
+import invaders.entities.Enemy;
 import invaders.entities.Player;
 import invaders.physics.Moveable;
 import invaders.physics.Vector2D;
@@ -18,7 +23,8 @@ public class GameEngine {
 	private List<GameObject> gameobjects;
 	private List<Renderable> renderables;
 	private Player player;
-
+	private ArrayList<Enemy> enemies;
+	private ArrayList<Bunker> bunkers;
 
 	private boolean left;
 	private boolean right;
@@ -28,8 +34,9 @@ public class GameEngine {
 		// read the config here
 		gameobjects = new ArrayList<GameObject>();
 		renderables = new ArrayList<Renderable>();
-
-		player = new Player(new Vector2D(200, 380));
+		enemies = new EnemyBuilder().buildEnemiesFromConfig();
+		bunkers = new BunkerBuilder().buildBunkersFromConfig();
+		player = new PlayerBuilder().buildPlayerFromConfig();
 		renderables.add(player);
 	}
 

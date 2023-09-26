@@ -3,6 +3,7 @@ package invaders.entities;
 import invaders.physics.Vector2D;
 import invaders.State.State;
 import invaders.State.NoDamageState;
+import invaders.rendering.Renderable;
 import javafx.scene.paint.Color;
 
 public class Bunker {

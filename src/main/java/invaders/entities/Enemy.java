@@ -1,15 +1,21 @@
 package invaders.entities;
 
 
+import invaders.Factory.Projectile;
 import invaders.Strategy.FastStrategy;
 import invaders.Strategy.ProjectileStrategy;
 import invaders.Strategy.SlowStrategy;
+import invaders.logic.Damagable;
+import invaders.physics.Moveable;
 import invaders.physics.Vector2D;
+import invaders.rendering.Animator;
+import invaders.rendering.Renderable;
+
 import javafx.scene.image.Image;
 
 import java.io.File;
 
-public class Enemy {
+public class Enemy{
     private Vector2D position;
     private String projectileType;
     private Image image;
@@ -18,9 +24,8 @@ public class Enemy {
     public Enemy(Vector2D position, String projectileType) {
         this.position = position;
         this.projectileType = projectileType;
-        this.image = new Image(new File("src/main/resources/enemy.png").toURI().toString());
-
-        // Determine the projectile strategy based on the provided type
+        this.image = new Image(new File("src/main/resources/enemy.png").toURI().toString(), 20, 20, true, true);
+//         Determine the projectile strategy based on the provided type
         if ("fast_straight".equals(projectileType)) {
             this.projectileStrategy = new FastStrategy();
         } else {

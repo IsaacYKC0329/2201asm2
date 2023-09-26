@@ -1,5 +1,6 @@
 package invaders;
 
+import invaders.Builder.WindowBuilder;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import invaders.engine.GameEngine;
@@ -18,7 +19,8 @@ public class App extends Application {
         Map<String, String> params = getParameters().getNamed();
 
         GameEngine model = new GameEngine("/resources/config.json");
-        GameWindow window = new GameWindow(model, 640, 400);
+        WindowBuilder wb = new WindowBuilder(model);
+        GameWindow window = wb.buildGameWindowFromConfig();
         window.run();
 
         primaryStage.setTitle("Space Invaders");
