@@ -1,11 +1,7 @@
 package invaders.rendering;
 
-import invaders.GameObject;
 import invaders.physics.Vector2D;
-import invaders.engine.GameEngine;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 
 /**
  * Represents something that can be rendered

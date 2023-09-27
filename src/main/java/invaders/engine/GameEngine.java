@@ -28,6 +28,7 @@ public class GameEngine {
 
 	private boolean left;
 	private boolean right;
+	private GameWindow gameWindow;
 
 
 	public GameEngine(String config){
@@ -37,6 +38,8 @@ public class GameEngine {
 		enemies = new EnemyBuilder().buildEnemiesFromConfig();
 		bunkers = new BunkerBuilder().buildBunkersFromConfig();
 		player = new PlayerBuilder().buildPlayerFromConfig();
+		renderables.addAll(bunkers);
+		renderables.addAll(enemies);
 		renderables.add(player);
 	}
 
@@ -48,22 +51,24 @@ public class GameEngine {
 		for(GameObject go: gameobjects){
 			go.update();
 		}
+		double width = gameWindow.getScene().getWidth();
+		double height = gameWindow.getScene().getHeight();
 
 		// ensure that renderable foreground objects don't go off-screen
 		for(Renderable ro: renderables){
 			if(!ro.getLayer().equals(Renderable.Layer.FOREGROUND)){
 				continue;
 			}
-			if(ro.getPosition().getX() + ro.getWidth() >= 640) {
-				ro.getPosition().setX(639-ro.getWidth());
+			if(ro.getPosition().getX() + ro.getWidth() >= width) {
+				ro.getPosition().setX(width-ro.getWidth());
 			}
 
 			if(ro.getPosition().getX() <= 0) {
 				ro.getPosition().setX(1);
 			}
 
-			if(ro.getPosition().getY() + ro.getHeight() >= 400) {
-				ro.getPosition().setY(399-ro.getHeight());
+			if(ro.getPosition().getY() + ro.getHeight() >= height) {
+				ro.getPosition().setY(height-ro.getHeight());
 			}
 
 			if(ro.getPosition().getY() <= 0) {
@@ -105,5 +110,9 @@ public class GameEngine {
 		if(right){
 			player.right();
 		}
+	}
+
+	public void setWindow(GameWindow gw){
+		this.gameWindow = gw;
 	}
 }

@@ -2,6 +2,7 @@ package invaders.entities;
 
 
 import invaders.Factory.Projectile;
+import invaders.Factory.ProjectileFactory;
 import invaders.Strategy.FastStrategy;
 import invaders.Strategy.ProjectileStrategy;
 import invaders.Strategy.SlowStrategy;
@@ -15,7 +16,7 @@ import javafx.scene.image.Image;
 
 import java.io.File;
 
-public class Enemy{
+public class Enemy implements Renderable{
     private Vector2D position;
     private String projectileType;
     private Image image;
@@ -48,12 +49,27 @@ public class Enemy{
         return position;
     }
 
+    @Override
+    public Layer getLayer() {
+        return Layer.FOREGROUND;
+    }
+
     public String getProjectileType() {
         return projectileType;
     }
 
     public Image getImage() {
         return image;
+    }
+
+    @Override
+    public double getWidth() {
+        return getImage().getWidth();
+    }
+
+    @Override
+    public double getHeight() {
+        return getImage().getHeight();
     }
 }
 

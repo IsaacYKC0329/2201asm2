@@ -4,8 +4,8 @@ import invaders.physics.Vector2D;
 
 public class ProjectileFactory {
 
-    public static Projectile createProjectile(Vector2D position) {
-        return new SimpleProjectile(position);
+    public Projectile createProjectile(Vector2D position, double speed){
+        return new SimpleProjectile(position, speed);
     }
 
 }

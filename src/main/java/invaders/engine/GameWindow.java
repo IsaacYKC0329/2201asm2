@@ -25,15 +25,17 @@ public class GameWindow {
 
     private double xViewportOffset = 0.0;
     private double yViewportOffset = 0.0;
-    private static final double VIEWPORT_MARGIN = 280.0;
+//    private static final double VIEWPORT_MARGIN = 280.0;
 
 	public GameWindow(GameEngine model, int width, int height){
 		this.width = width;
         this.height = height;
         this.model = model;
+        model.setWindow(this);
         pane = new Pane();
         scene = new Scene(pane, width, height);
         this.background = new SpaceBackground(model, pane);
+        System.out.println(pane.getHeight()+" "+pane.getWidth());
 
         KeyboardInputHandler keyboardInputHandler = new KeyboardInputHandler(this.model);
 

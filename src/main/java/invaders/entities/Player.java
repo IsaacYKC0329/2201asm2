@@ -1,6 +1,5 @@
 package invaders.entities;
 
-import invaders.Factory.Projectile;
 import invaders.logic.Damagable;
 import invaders.physics.Moveable;
 import invaders.physics.Vector2D;
@@ -65,7 +64,6 @@ public class Player implements Moveable, Damagable, Renderable {
     }
 
     public void shoot(){
-        ProjectileFactory.createProjectile(this.position);
 
     }
 
