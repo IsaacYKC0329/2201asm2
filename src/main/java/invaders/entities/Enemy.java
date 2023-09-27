@@ -6,6 +6,7 @@ import invaders.Factory.ProjectileFactory;
 import invaders.Strategy.FastStrategy;
 import invaders.Strategy.ProjectileStrategy;
 import invaders.Strategy.SlowStrategy;
+import invaders.engine.GameWindow;
 import invaders.logic.Damagable;
 import invaders.physics.Moveable;
 import invaders.physics.Vector2D;
@@ -21,6 +22,7 @@ public class Enemy implements Renderable{
     private String projectileType;
     private Image image;
     private ProjectileStrategy projectileStrategy;
+    private double speed;
 
     public Enemy(Vector2D position, String projectileType) {
         this.position = position;
@@ -32,6 +34,7 @@ public class Enemy implements Renderable{
         } else {
             this.projectileStrategy = new SlowStrategy();
         }
+        this.speed = this.image.getWidth();
     }
 
     public void shoot() {
@@ -44,10 +47,36 @@ public class Enemy implements Renderable{
     // - Checking if the enemy has hit the player
     // - ... and so on
 
+    public void move(){
+        double x = this.position.getX();
+        double y = this.position.getY();
+        if(((int)(y/20))%2 == 1){
+            if(x - speed > 0){
+                x = x - speed - 5;
+            }else {
+                x = 0;
+                y = y + 20;
+            }
+        }else{
+            if(x + speed < GameWindow.scene.getWidth() - speed - 5){
+                x = x + speed + 5;
+            }else {
+                x = GameWindow.scene.getWidth();
+                y = y + 20;
+            }
+        }
+        this.position = new Vector2D(x,y);
+    }
 
     public Vector2D getPosition() {
         return position;
     }
+
+    public void changeSpeed(double speed){
+        this.speed = speed;
+    }
+
+    public double getSpeed(){return speed;}
 
     @Override
     public Layer getLayer() {
@@ -71,5 +100,6 @@ public class Enemy implements Renderable{
     public double getHeight() {
         return getImage().getHeight();
     }
+
 }
 

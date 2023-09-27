@@ -29,7 +29,7 @@ public class GameEngine {
 	private boolean left;
 	private boolean right;
 	private GameWindow gameWindow;
-
+	private int count = 0;
 
 	public GameEngine(String config){
 		// read the config here
@@ -50,6 +50,14 @@ public class GameEngine {
 		movePlayer();
 		for(GameObject go: gameobjects){
 			go.update();
+		}
+		if(count%60 != 0){
+			count++;
+		}else {
+			for (Enemy e : enemies) {
+				e.move();
+			}
+			count = 1;
 		}
 		double width = gameWindow.getScene().getWidth();
 		double height = gameWindow.getScene().getHeight();

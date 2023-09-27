@@ -47,13 +47,10 @@ public class Player implements Moveable, Damagable, Renderable {
         for (int x = 0; x < (int) this.image.getWidth(); x++) {
             for (int y = 0; y < (int) this.image.getHeight(); y++) {
                 Color originalColor = this.image.getPixelReader().getColor(x, y);
-                // 将覆盖颜色与原始颜色混合
                 int newRed = (int) overlayRed;
                 int newGreen = (int) overlayGreen;
                 int newBlue = (int) overlayBlue;
                 Color newColor = Color.rgb(newRed, newGreen, newBlue);
-//                System.out.println(newColor.toString());
-                // 写入新颜色到图像
                 if(!originalColor.toString().equals("0x00000000")) {
                     pixelWriter.setColor(x, y, newColor);
                 }

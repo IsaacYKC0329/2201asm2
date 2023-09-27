@@ -32,7 +32,7 @@ public class Bunker implements Renderable{
 
         // 创建一个长方形并设置颜色
         Rectangle rectangle = new Rectangle((int) size.getX(), (int) size.getY());
-        rectangle.setFill(Color.GREY);
+        rectangle.setFill(this.state.getColor());
 
         // 在 WritableImage 上绘制长方形
         rectangle.snapshot(null, writableImage);

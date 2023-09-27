@@ -7,13 +7,11 @@ import javafx.scene.image.ImageView;
 
 public class EntityViewImpl implements EntityView {
     private Renderable entity;
-    private Vector2D position;
     private boolean delete = false;
     private ImageView node;
 
     public EntityViewImpl(Renderable entity) {
         this.entity = entity;
-        this.position = entity.getPosition();
         node = new ImageView(entity.getImage());
         node.setViewOrder(getViewOrder(entity.getLayer()));
         update(0.0, 0.0);
@@ -33,8 +31,8 @@ public class EntityViewImpl implements EntityView {
         if (!node.getImage().equals(entity.getImage())) {
             node.setImage(entity.getImage());
         }
-        node.setX(position.getX() - xViewportOffset);
-        node.setY(position.getY() - yViewportOffset);
+        node.setX(entity.getPosition().getX() - xViewportOffset);
+        node.setY(entity.getPosition().getY() - yViewportOffset);
         node.setFitHeight(entity.getHeight());
         node.setFitWidth(entity.getWidth());
         node.setPreserveRatio(true);

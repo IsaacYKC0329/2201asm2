@@ -3,6 +3,7 @@ package invaders.engine;
 import java.util.List;
 import java.util.ArrayList;
 
+import invaders.entities.Enemy;
 import invaders.entities.EntityViewImpl;
 import invaders.entities.SpaceBackground;
 import javafx.util.Duration;
@@ -15,9 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 public class GameWindow {
-	private final int width;
-    private final int height;
-	private Scene scene;
+
+	public static Scene scene;
     private Pane pane;
     private GameEngine model;
     private List<EntityView> entityViews;
@@ -28,8 +28,6 @@ public class GameWindow {
 //    private static final double VIEWPORT_MARGIN = 280.0;
 
 	public GameWindow(GameEngine model, int width, int height){
-		this.width = width;
-        this.height = height;
         this.model = model;
         model.setWindow(this);
         pane = new Pane();
@@ -55,7 +53,6 @@ public class GameWindow {
 
     private void draw(){
         model.update();
-
         List<Renderable> renderables = model.getRenderables();
         for (Renderable entity : renderables) {
             boolean notFound = true;
