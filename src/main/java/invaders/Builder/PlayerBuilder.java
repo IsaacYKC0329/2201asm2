@@ -18,11 +18,18 @@ public class PlayerBuilder implements builder{
         try {
             FileReader reader = new FileReader(CONFIG_PATH);
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            JSONObject windowObject = (JSONObject) jsonObject.get("Player");
-            JSONObject positionObject = (JSONObject) windowObject.get("position");
+            JSONObject playerObject = (JSONObject) jsonObject.get("Player");
+            JSONObject positionObject = (JSONObject) playerObject.get("position");
             int xObject = Integer.parseInt(positionObject.get("x").toString());
             int yObject = Integer.parseInt(positionObject.get("y").toString());
-            return new Player(new Vector2D(xObject, yObject));
+            Long speedObject = (Long) playerObject.get("speed");
+            Long livesObject = (Long) playerObject.get("lives");
+            String colorObject = (String) playerObject.get("colour");
+            Player player = new Player(new Vector2D(xObject, yObject));
+            player.setHealth(livesObject);
+            player.setSpeed(speedObject);
+            player.setColor(colorObject);
+            return player;
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
