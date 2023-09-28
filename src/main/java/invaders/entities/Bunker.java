@@ -70,12 +70,9 @@ public class Bunker implements Renderable{
     public void hit() {
         hits++;
         state = state.takeHit(hits);  // Pass hits count to states
-        if (state.shouldRemove()) {
-            removeBunker();
+        if (hits > 2) {
+            this.position.setX(-1);
+            this.position.setY(-1);
         }
-    }
-
-    private void removeBunker() {
-        return;
     }
 }

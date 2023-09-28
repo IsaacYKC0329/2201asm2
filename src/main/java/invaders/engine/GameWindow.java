@@ -1,14 +1,14 @@
 package invaders.engine;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
-import invaders.entities.Enemy;
-import invaders.entities.EntityViewImpl;
-import invaders.entities.SpaceBackground;
+import invaders.Factory.Projectile;
+import invaders.Factory.SimpleProjectile;
+import invaders.entities.*;
 import javafx.util.Duration;
 
-import invaders.entities.EntityView;
 import invaders.rendering.Renderable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -51,8 +51,7 @@ public class GameWindow {
 
     private void draw(){
         model.update();
-        List<Renderable> renderables = model.getRenderables();
-        for (Renderable entity : renderables) {
+        for (Renderable entity : GameEngine.renderables) {
             boolean notFound = true;
             for (EntityView view : entityViews) {
                 if (view.matchesEntity(entity)) {
@@ -71,6 +70,7 @@ public class GameWindow {
         for (EntityView entityView : entityViews) {
             if (entityView.isMarkedForDelete()) {
                 pane.getChildren().remove(entityView.getNode());
+                GameEngine.renderables.remove(entityView.getEntity());
             }
         }
         entityViews.removeIf(EntityView::isMarkedForDelete);

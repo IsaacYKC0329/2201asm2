@@ -34,6 +34,7 @@ public class Enemy implements Renderable{
         } else {
             this.projectileStrategy = new SlowStrategy();
         }
+        this.projectileStrategy.setRenderable(this);
         this.speed = this.image.getWidth();
     }
 

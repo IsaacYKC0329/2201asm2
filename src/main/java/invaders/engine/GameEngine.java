@@ -2,17 +2,18 @@ package invaders.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 import invaders.Builder.BunkerBuilder;
 import invaders.Builder.EnemyBuilder;
 import invaders.Builder.PlayerBuilder;
+import invaders.Factory.Projectile;
+import invaders.Factory.SimpleProjectile;
 import invaders.GameObject;
 import invaders.entities.Bunker;
 import invaders.entities.Enemy;
 import invaders.entities.Player;
-import invaders.physics.Moveable;
-import invaders.physics.Vector2D;
 import invaders.rendering.Renderable;
 
 /**
@@ -21,20 +22,22 @@ import invaders.rendering.Renderable;
 public class GameEngine {
 
 	private List<GameObject> gameobjects;
-	private List<Renderable> renderables;
+	public static List<Renderable> renderables;
+	public static List<Projectile> Projectiles;
 	private Player player;
 	private ArrayList<Enemy> enemies;
-	private ArrayList<Bunker> bunkers;
+	public static ArrayList<Bunker> bunkers;
 
 	private boolean left;
 	private boolean right;
 	private GameWindow gameWindow;
-	private int count = 0;
+	private int count = 1;
 
 	public GameEngine(String config){
 		// read the config here
 		gameobjects = new ArrayList<GameObject>();
 		renderables = new ArrayList<Renderable>();
+		Projectiles = new ArrayList<>();
 		enemies = new EnemyBuilder().buildEnemiesFromConfig();
 		bunkers = new BunkerBuilder().buildBunkersFromConfig();
 		player = new PlayerBuilder().buildPlayerFromConfig();
@@ -56,8 +59,20 @@ public class GameEngine {
 		}else {
 			for (Enemy e : enemies) {
 				e.move();
+				Random random = new Random();
+				int i = random.nextInt(1000);
+				if(i > 980 && GameEngine.Projectiles.size() < 3){
+					e.shoot();
+				}
 			}
 			count = 1;
+		}
+		if(count%5 == 0){
+			for(Projectile p: Projectiles){
+				p.move();
+			}
+			Projectiles.removeIf(Projectile::getDisappear);
+			System.out.println(Projectiles.size());
 		}
 		double width = gameWindow.getScene().getWidth();
 		double height = gameWindow.getScene().getHeight();
@@ -84,11 +99,6 @@ public class GameEngine {
 			}
 		}
 	}
-
-	public List<Renderable> getRenderables(){
-		return renderables;
-	}
-
 
 	public void leftReleased() {
 		this.left = false;

@@ -1,5 +1,7 @@
 package invaders.entities;
 
+import invaders.Factory.Projectile;
+import invaders.engine.GameEngine;
 import invaders.physics.Vector2D;
 import invaders.rendering.Renderable;
 import javafx.scene.Node;
@@ -37,6 +39,9 @@ public class EntityViewImpl implements EntityView {
         node.setFitWidth(entity.getWidth());
         node.setPreserveRatio(true);
         delete = false;
+        if (this.entity.getPosition().getY() < 10){
+            this.markForDelete();
+        }
     }
 
     @Override
@@ -47,6 +52,14 @@ public class EntityViewImpl implements EntityView {
     @Override
     public void markForDelete() {
         delete = true;
+        if(this.entity instanceof Projectile projectile){
+            try{
+                Player player = (Player) projectile.getShooter();
+                Player.shooting = false;
+            }catch (TypeNotPresentException e){
+                System.out.println();
+            }
+        }
     }
 
     @Override
@@ -58,4 +71,6 @@ public class EntityViewImpl implements EntityView {
     public boolean isMarkedForDelete() {
         return delete;
     }
+    @Override
+    public Renderable getEntity(){return this.entity;}
 }
