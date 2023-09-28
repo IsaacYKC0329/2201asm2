@@ -1,5 +1,7 @@
 package invaders.entities;
 
+import invaders.Strategy.ProjectileStrategy;
+import invaders.Strategy.SlowStrategy;
 import invaders.logic.Damagable;
 import invaders.physics.Moveable;
 import invaders.physics.Vector2D;
@@ -24,11 +26,14 @@ public class Player implements Moveable, Damagable, Renderable {
     private final double width = 25;
     private final double height = 30;
     private Image image;
+    private final ProjectileStrategy projectileStrategy;
 
 
     public Player(Vector2D position){
         this.image = new Image(new File("src/main/resources/player.png").toURI().toString(), width, height, true, true);
         this.position = position;
+        projectileStrategy = new SlowStrategy();
+        projectileStrategy.setRenderable(this);
     }
 
     public void setHealth(double health){

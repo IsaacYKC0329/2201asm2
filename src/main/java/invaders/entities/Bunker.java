@@ -27,9 +27,6 @@ public class Bunker implements Renderable{
         // 创建一个 WritableImage 对象，用于绘制长方形
         WritableImage writableImage = new WritableImage((int) size.getX(), (int) size.getY());
 
-        // 获取 WritableImage 的像素写入器
-        javafx.scene.image.PixelWriter pixelWriter = writableImage.getPixelWriter();
-
         // 创建一个长方形并设置颜色
         Rectangle rectangle = new Rectangle((int) size.getX(), (int) size.getY());
         rectangle.setFill(this.state.getColor());

@@ -33,8 +33,6 @@ public class GameWindow {
         pane = new Pane();
         scene = new Scene(pane, width, height);
         this.background = new SpaceBackground(model, pane);
-        System.out.println(pane.getHeight()+" "+pane.getWidth());
-
         KeyboardInputHandler keyboardInputHandler = new KeyboardInputHandler(this.model);
 
         scene.setOnKeyPressed(keyboardInputHandler::handlePressed);
