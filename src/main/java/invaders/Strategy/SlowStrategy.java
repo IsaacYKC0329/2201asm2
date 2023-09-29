@@ -28,9 +28,6 @@ public class SlowStrategy implements ProjectileStrategy {
         projectile.setShooter(this.renderable);
         GameEngine.Projectiles.add(projectile);
         GameEngine.renderables.add((Renderable) projectile);
-        if (this.renderable.getClass() == Player.class){
-            Player.shooting = true;
-        }
     }
     @Override
     public void setRenderable(Renderable renderable){
