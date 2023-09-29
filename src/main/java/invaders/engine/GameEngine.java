@@ -24,8 +24,8 @@ public class GameEngine {
 	private List<GameObject> gameobjects;
 	public static List<Renderable> renderables;
 	public static List<Projectile> Projectiles;
-	private Player player;
-	private ArrayList<Enemy> enemies;
+	public static Player player;
+	public static ArrayList<Enemy> enemies;
 	public static ArrayList<Bunker> bunkers;
 
 	private boolean left;
@@ -51,6 +51,10 @@ public class GameEngine {
 	 */
 	public void update(){
 		movePlayer();
+		if(player.getHealth() <= 0){
+			System.out.println("You Lose!");
+			System.exit(0);
+		}
 		for(GameObject go: gameobjects){
 			go.update();
 		}
@@ -60,8 +64,8 @@ public class GameEngine {
 			for (Enemy e : enemies) {
 				e.move();
 				Random random = new Random();
-				int i = random.nextInt(1000);
-				if(i > 980 && GameEngine.Projectiles.size() < 3){
+				int i = random.nextInt(10000);
+				if(i > 9950 && GameEngine.Projectiles.size() < 3){
 					e.shoot();
 				}
 			}
@@ -72,8 +76,9 @@ public class GameEngine {
 				p.move();
 			}
 			Projectiles.removeIf(Projectile::getDisappear);
-			System.out.println(Projectiles.size());
 		}
+		enemies.removeIf(enemy -> enemy.getPosition().getY()<=0);
+		bunkers.removeIf(bunker -> bunker.getPosition().getY()<=0);
 		double width = gameWindow.getScene().getWidth();
 		double height = gameWindow.getScene().getHeight();
 

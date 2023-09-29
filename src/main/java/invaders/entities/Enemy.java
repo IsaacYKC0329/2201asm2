@@ -6,6 +6,7 @@ import invaders.Factory.ProjectileFactory;
 import invaders.Strategy.FastStrategy;
 import invaders.Strategy.ProjectileStrategy;
 import invaders.Strategy.SlowStrategy;
+import invaders.engine.GameEngine;
 import invaders.engine.GameWindow;
 import invaders.logic.Damagable;
 import invaders.physics.Moveable;
@@ -67,6 +68,8 @@ public class Enemy implements Renderable{
             }
         }
         this.position = new Vector2D(x,y);
+        removeBunker();
+        removePlayer();
     }
 
     public Vector2D getPosition() {
@@ -102,5 +105,32 @@ public class Enemy implements Renderable{
         return getImage().getHeight();
     }
 
+    public void removeBunker(){
+        for(Bunker bunker: GameEngine.bunkers){
+            if(this.position.getX() > bunker.getPosition().getX()
+                    && this.position.getX() < bunker.getPosition().getX() + bunker.getSize().getX()
+                    && this.position.getY() > bunker.getPosition().getY()
+                    && this.position.getY() < bunker.getPosition().getY() + bunker.getSize().getY()
+            ){
+                bunker.destroy();
+            }
+        }
+    }
+
+    public void removePlayer(){
+        if(this.position.getX() > GameEngine.player.getPosition().getX()
+                && this.position.getX() < GameEngine.player.getPosition().getX() + GameEngine.player.getImage().getWidth()
+                && this.position.getY() >GameEngine.player.getPosition().getY()
+                && this.position.getY() < GameEngine.player.getPosition().getY() + GameEngine.player.getImage().getHeight()
+        ){
+            System.out.println("You Lose!");
+            System.exit(0);
+        }
+    }
+
+    public void destroy(){
+        this.position.setY(-1);
+        this.position.setX(-1);
+    }
 }
 

@@ -45,15 +45,18 @@ public class SimpleProjectile implements Projectile, Renderable {
 
     @Override
     public void move() {
+        if(this.position.getY() < 0 || this.position.getY() > GameWindow.scene.getHeight()){
+            disappear();
+        }
         try {
             Enemy player = (Enemy) shooter;
             position.setY(position.getY() + speed);
-
-
         }catch (Exception e) {
             position.setY(position.getY() - speed);
         }
         removeBunker();
+        hitPlayer();
+        hitEnemy();
     }
 
     @Override
@@ -64,7 +67,7 @@ public class SimpleProjectile implements Projectile, Renderable {
 
     @Override
     public Renderable getShooter() {
-        return null;
+        return this.shooter;
     }
 
     @Override
@@ -74,8 +77,12 @@ public class SimpleProjectile implements Projectile, Renderable {
 
         // 创建一个长方形并设置颜色
         Rectangle rectangle = new Rectangle((int) size.getX(), (int) size.getY());
-        rectangle.setFill(Color.WHITE);
-
+        try{
+            Enemy enemy = (Enemy) getShooter();
+            rectangle.setFill(Color.WHITE);
+        }catch (ClassCastException e){
+            rectangle.setFill(Color.PURPLE);
+        }
         // 在 WritableImage 上绘制长方形
         rectangle.snapshot(null, writableImage);
         return writableImage;
@@ -114,5 +121,28 @@ public class SimpleProjectile implements Projectile, Renderable {
         }
     }
 
+    public void hitPlayer(){
+        if(this.position.getX() > GameEngine.player.getPosition().getX() - GameEngine.player.getImage().getWidth()/2
+                && this.position.getX() < GameEngine.player.getPosition().getX() + GameEngine.player.getImage().getWidth()/2
+                && this.position.getY() >GameEngine.player.getPosition().getY() - GameEngine.player.getImage().getHeight()/2
+                && this.position.getY() < GameEngine.player.getPosition().getY() + GameEngine.player.getImage().getHeight()/2
+        ){
+            GameEngine.player.getHit();
+            disappear();
+        }
+    }
+
+    public void hitEnemy(){
+        for(Enemy enemy:GameEngine.enemies){
+            if(this.position.getX() > enemy.getPosition().getX()
+                    && this.position.getX() < enemy.getPosition().getX() + enemy.getImage().getWidth()
+                    && this.position.getY() > enemy.getPosition().getY()
+                    && this.position.getY() < enemy.getPosition().getY() + enemy.getImage().getHeight()
+            ){
+                disappear();
+                enemy.destroy();
+            }
+        }
+    }
 
 }

@@ -133,4 +133,8 @@ public class Player implements Moveable, Damagable, Renderable {
         return Layer.FOREGROUND;
     }
 
+    public void getHit(){
+        this.health --;
+    }
+
 }

@@ -71,8 +71,12 @@ public class Bunker implements Renderable{
         hits++;
         state = state.takeHit(hits);  // Pass hits count to states
         if (hits > 2) {
-            this.position.setX(-1);
-            this.position.setY(-1);
+            destroy();
         }
+    }
+
+    public void destroy(){
+        this.position.setX(-1);
+        this.position.setY(-1);
     }
 }

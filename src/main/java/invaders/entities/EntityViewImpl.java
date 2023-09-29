@@ -39,7 +39,7 @@ public class EntityViewImpl implements EntityView {
         node.setFitWidth(entity.getWidth());
         node.setPreserveRatio(true);
         delete = false;
-        if (this.entity.getPosition().getY() < 10){
+        if (this.entity.getPosition().getY() < 10 || this.entity.getPosition().getX() < 0){
             this.markForDelete();
         }
     }
@@ -54,10 +54,9 @@ public class EntityViewImpl implements EntityView {
         delete = true;
         if(this.entity instanceof Projectile projectile){
             try{
-                Player player = (Player) projectile.getShooter();
+                Enemy enemy = (Enemy) projectile.getShooter();
+            }catch (ClassCastException e){
                 Player.shooting = false;
-            }catch (TypeNotPresentException e){
-                System.out.println();
             }
         }
     }
