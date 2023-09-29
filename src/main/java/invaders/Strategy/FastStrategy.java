@@ -5,6 +5,7 @@ import invaders.Factory.ProjectileFactory;
 import invaders.engine.GameEngine;
 import invaders.physics.Vector2D;
 import invaders.rendering.Renderable;
+import javafx.scene.paint.Color;
 
 public class FastStrategy implements ProjectileStrategy {
     private static final double SPEED = 6.0;
@@ -22,6 +23,7 @@ public class FastStrategy implements ProjectileStrategy {
         // This could also handle any visual or sound effects associated with a fast shot
         Projectile projectile = factory.createProjectile(new Vector2D(renderable.getPosition().getX(),
                 renderable.getPosition().getY() + 15), SPEED);
+        projectile.setColor(Color.WHITE);
         projectile.setShooter(this.renderable);
         GameEngine.Projectiles.add(projectile);
         GameEngine.renderables.add((Renderable) projectile);

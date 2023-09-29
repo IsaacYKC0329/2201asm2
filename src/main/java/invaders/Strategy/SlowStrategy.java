@@ -8,6 +8,7 @@ import invaders.entities.Enemy;
 import invaders.entities.Player;
 import invaders.physics.Vector2D;
 import invaders.rendering.Renderable;
+import javafx.scene.paint.Color;
 
 public class SlowStrategy implements ProjectileStrategy {
     private static final double SPEED = 3.0;
@@ -25,6 +26,7 @@ public class SlowStrategy implements ProjectileStrategy {
         // This could also handle any visual or sound effects associated with a slow shot
         Projectile projectile = factory.createProjectile(new Vector2D(renderable.getPosition().getX(),
                 renderable.getPosition().getY() + 15), SPEED);
+        projectile.setColor(Color.WHITE);
         projectile.setShooter(this.renderable);
         GameEngine.Projectiles.add(projectile);
         GameEngine.renderables.add((Renderable) projectile);

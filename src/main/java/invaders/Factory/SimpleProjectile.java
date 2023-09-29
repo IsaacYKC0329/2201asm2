@@ -19,6 +19,7 @@ public class SimpleProjectile implements Projectile, Renderable {
     private Vector2D size = new Vector2D(0,0); // Diameter for circle or side length for rectangle
     private Renderable shooter;
     private boolean disappear;
+    private Color color;
 
     public SimpleProjectile(Vector2D position, double speed) {
         this.position = position;
@@ -36,6 +37,11 @@ public class SimpleProjectile implements Projectile, Renderable {
         this.disappear = true;
         this.position.setX(-1);
         this.position.setY(-1);
+        try{
+            Enemy enemy = (Enemy) getShooter();
+        }catch (ClassCastException e){
+            Player.shooting = false;
+        }
     }
 
     @Override
@@ -44,16 +50,16 @@ public class SimpleProjectile implements Projectile, Renderable {
     }
 
     @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    @Override
     public void move() {
         if(this.position.getY() < 0 || this.position.getY() > GameWindow.scene.getHeight()){
             disappear();
         }
-        try {
-            Enemy player = (Enemy) shooter;
-            position.setY(position.getY() + speed);
-        }catch (Exception e) {
-            position.setY(position.getY() - speed);
-        }
+        position.setY(position.getY() + speed);
         removeBunker();
         hitPlayer();
         hitEnemy();
@@ -77,12 +83,7 @@ public class SimpleProjectile implements Projectile, Renderable {
 
         // 创建一个长方形并设置颜色
         Rectangle rectangle = new Rectangle((int) size.getX(), (int) size.getY());
-        try{
-            Enemy enemy = (Enemy) getShooter();
-            rectangle.setFill(Color.WHITE);
-        }catch (ClassCastException e){
-            rectangle.setFill(Color.PURPLE);
-        }
+        rectangle.setFill(color);
         // 在 WritableImage 上绘制长方形
         rectangle.snapshot(null, writableImage);
         return writableImage;
@@ -122,10 +123,10 @@ public class SimpleProjectile implements Projectile, Renderable {
     }
 
     public void hitPlayer(){
-        if(this.position.getX() > GameEngine.player.getPosition().getX() - GameEngine.player.getImage().getWidth()/2
-                && this.position.getX() < GameEngine.player.getPosition().getX() + GameEngine.player.getImage().getWidth()/2
-                && this.position.getY() >GameEngine.player.getPosition().getY() - GameEngine.player.getImage().getHeight()/2
-                && this.position.getY() < GameEngine.player.getPosition().getY() + GameEngine.player.getImage().getHeight()/2
+        if(this.position.getX() > GameEngine.player.getPosition().getX()
+                && this.position.getX() < GameEngine.player.getPosition().getX() + GameEngine.player.getImage().getWidth()
+                && this.position.getY() >GameEngine.player.getPosition().getY()
+                && this.position.getY() < GameEngine.player.getPosition().getY() + GameEngine.player.getImage().getHeight()
         ){
             GameEngine.player.getHit();
             disappear();
